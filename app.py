@@ -27,42 +27,29 @@ def generar_informe_mantenimiento():
     sectores = df_semana['Sector / Equipo'].unique().tolist() if not df_semana.empty else []
     
     # Redacción automática del informe ejecutivo
-    informe_texto = f"""
-    ==================================================
-    INFORME SEMANAL DE GESTIÓN DE MANTENIMIENTO
-    Período: {hace_una_semana.strftime('%d/%m/%Y')} al {hoy.strftime('%d/%m/%Y')}
-    ==================================================
-
-    1. RESUMEN OPERATIVO:
-    - Total de intervenciones completadas: {total_tareas}
-    - Tiempo total invertido: {total_horas} horas
-    # Redacción automática del informe ejecutivo
-    informe_texto = f"""
-    ==================================================
-    INFORME SEMANAL DE GESTIÓN DE MANTENIMIENTO
-    Período: {hace_una_semana.strftime('%d/%m/%Y')} al {hoy.strftime('%d/%m/%Y')}
-    ==================================================
-
-    1. RESUMEN OPERATIVO:
-    - Total de intervenciones completadas: {total_tareas}
-    - Tiempo total invertido: {total_horas} horas
-    - Sectores atendidos: {', '.join(str(s) for s in sectores) if sectores else 'Ninguno'}
-
-    2. DETALLE DE TAREAS EJECUTADAS:
-    """
+    periodo_str = f"Período: {hace_una_semana.strftime('%d/%m/%Y')} al {hoy.strftime('%d/%m/%Y')}"
+    sectores_str = ', '.join(str(s) for s in sectores) if sectores else 'Ninguno'
+    
+    informe_texto = (
+        "INFORME SEMANAL DE GESTIÓN DE MANTENIMIENTO\n"
+        f"{periodo_str}\n\n"
+        "1. RESUMEN OPERATIVO:\n"
+        f"- Total de intervenciones completadas: {total_tareas}\n"
+        f"- Tiempo total invertido: {total_horas} horas\n"
+        f"- Sectores atendidos: {sectores_str}\n\n"
+        "2. DETALLE DE TAREAS EJECUTADAS:"
+    )
     
     for index, row in df_semana.iterrows():
-        informe_texto += f"\n- [{row.get('Sector / Equipo', 'N/A')}] {row.get('Descripción de la Falla/Tarea', 'N/A')} (Horas: {row.get('Tiempo Invertido (hs)', 0)})"
+        sector = row.get('Sector / Equipo', 'N/A')
+        descripcion = row.get('Descripción de la Falla/Tarea', 'N/A')
+        horas = row.get('Tiempo Invertido (hs)', 0)
+        informe_texto += f"\n- [{sector}] {descripcion} (Horas: {horas})"
     
-    informe_texto += "\n\n3. OBSERVACIONES:\nSe dio cumplimiento al plan de mantenimiento semanal asegurando la disponibilidad operativa de los equipos críticos de planta."
-
-    2. DETALLE DE TAREAS EJECUTADAS:
-    """
-    
-    for index, row in df_semana.iterrows():
-        informe_texto += f"\n- [{row.get('Sector / Equipo', 'N/A')}] {row.get('Descripción de la Falla/Tarea', 'N/A')} (Horas: {row.get('Tiempo Invertido (hs)', 0)})"
-    
-    informe_texto += "\n\n3. OBSERVACIONES:\nSe dio cumplimiento al plan de mantenimiento semanal asegurando la disponibilidad operativa de los equipos críticos de planta."
+    informe_texto += (
+        "\n\n3. OBSERVACIONES:\n"
+        "Se dio cumplimiento al plan de mantenimiento semanal asegurando la disponibilidad operativa de los equipos críticos de planta."
+    )
     
     print(informe_texto)
     return informe_texto
