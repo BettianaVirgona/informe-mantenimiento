@@ -16,7 +16,7 @@ def cargar_datos():
     df = pd.read_csv(url)
     
     # Convertir las columnas de fecha a formato datetime de pandas
-    df['Marca temporal (ID)'] = pd.to_datetime(df['Marca temporal (ID)'], errors='coerce')
+    df['Fecha de Solicitud'] = pd.to_datetime(df['Fecha de Solicitud'], errors='coerce')
     df['Fecha de Resolución'] = pd.to_datetime(df['Fecha de Resolución'], format='%d/%m/%Y %H:%M:%S', errors='coerce')
     
     return df
