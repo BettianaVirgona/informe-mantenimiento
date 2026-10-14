@@ -36,7 +36,25 @@ def generar_informe_mantenimiento():
     1. RESUMEN OPERATIVO:
     - Total de intervenciones completadas: {total_tareas}
     - Tiempo total invertido: {total_horas} horas
-    - Sectores atendidos: {', '.join(str(s) for s in sectores) if sectoresist else 'Ninguno'}
+    # Redacción automática del informe ejecutivo
+    informe_texto = f"""
+    ==================================================
+    INFORME SEMANAL DE GESTIÓN DE MANTENIMIENTO
+    Período: {hace_una_semana.strftime('%d/%m/%Y')} al {hoy.strftime('%d/%m/%Y')}
+    ==================================================
+
+    1. RESUMEN OPERATIVO:
+    - Total de intervenciones completadas: {total_tareas}
+    - Tiempo total invertido: {total_horas} horas
+    - Sectores atendidos: {', '.join(str(s) for s in sectores) if sectores else 'Ninguno'}
+
+    2. DETALLE DE TAREAS EJECUTADAS:
+    """
+    
+    for index, row in df_semana.iterrows():
+        informe_texto += f"\n- [{row.get('Sector / Equipo', 'N/A')}] {row.get('Descripción de la Falla/Tarea', 'N/A')} (Horas: {row.get('Tiempo Invertido (hs)', 0)})"
+    
+    informe_texto += "\n\n3. OBSERVACIONES:\nSe dio cumplimiento al plan de mantenimiento semanal asegurando la disponibilidad operativa de los equipos críticos de planta."
 
     2. DETALLE DE TAREAS EJECUTADAS:
     """
